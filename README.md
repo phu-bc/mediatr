@@ -1,1 +1,1 @@
-# mediatr
+# MediatR Tutorial Demo project
