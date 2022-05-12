@@ -11,12 +11,10 @@ namespace MediatRDemo.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly IMapper _mapper;
 
-        public EmployeeController(IEmployeeRepository employeeRepository, IMapper mapper)
+        public EmployeeController(IEmployeeRepository employeeRepository)
         {
             _employeeRepository = employeeRepository;
-            _mapper = mapper;
         }
 
         [HttpGet("")]
@@ -40,7 +38,12 @@ namespace MediatRDemo.Controllers
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody] CreateEmployeeRequest employee)
         {
-            var newEmployee = _mapper.Map<Employee>(employee);
+            var newEmployee = new Employee
+            {
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Email = employee.Email
+            };
             var id = await _employeeRepository.Add(newEmployee);
 
             return Ok(id);
