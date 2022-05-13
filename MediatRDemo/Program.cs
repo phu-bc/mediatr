@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using MediatRDemo;
+﻿using MediatRDemo;
 using MediatRDemo.Repositories;
 using Microsoft.EntityFrameworkCore;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,16 +14,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<EmployeeContext>(opt => opt.UseInMemoryDatabase("EmployeeContext"));
 
-var mappingConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile(new UserProfile());
-});
-
-var mapper = mappingConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
-//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+builder.Services.AddMediatR(typeof(Program));
 
 var app = builder.Build();
 
