@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using MediatRDemo.Commands;
-using MediatRDemo.Models;
 using MediatRDemo.Queries;
-using MediatRDemo.Repositories;
-using MediatRDemo.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MediatRDemo.Controllers
@@ -13,13 +9,10 @@ namespace MediatRDemo.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly IEmployeeRepository _employeeRepository;
         private readonly IMediator _mediator;
 
-        public EmployeeController(IEmployeeRepository employeeRepository,
-            IMediator mediator)
+        public EmployeeController(IMediator mediator)
         {
-            _employeeRepository = employeeRepository;
             _mediator = mediator;
         }
 
@@ -42,29 +35,13 @@ namespace MediatRDemo.Controllers
 
             var employee = await _mediator.Send(getEmployeeByIdQuery);
 
-            if(employee == null) return NotFound();
-
             return Ok(employee);
         }
 
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody] AddEmployeeCommand addEmployeeCommand)
         {
-            //var addEmployeeCommand = new AddEmployeeCommand
-            //{
-            //    FirstName = employee.FirstName,
-            //    LastName = employee.LastName,
-            //    Email = employee.Email
-            //};
             var id = await _mediator.Send(addEmployeeCommand);
-
-            //var newEmployee = new Employee
-            //{
-            //    FirstName = employee.FirstName,
-            //    LastName = employee.LastName,
-            //    Email = employee.Email
-            //};
-            //var id = await _employeeRepository.Add(newEmployee);
 
             return Ok(id);
         }
@@ -72,7 +49,8 @@ namespace MediatRDemo.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _employeeRepository.Delete(id);
+            var deleteEmployeeCommand = new DeleteEmployeeCommand(id);
+            await _mediator.Send(deleteEmployeeCommand);
 
             return Ok();
         }

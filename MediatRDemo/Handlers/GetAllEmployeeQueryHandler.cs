@@ -16,13 +16,7 @@ namespace MediatRDemo.Handlers
 
         public Task<List<Employee>> Handle(GetAllEmployeeQuery request, CancellationToken cancellationToken)
         {
-            //MyMethod();
             return _employeeRepository.GetAll();
-        }
-
-        private void MyMethod()
-        {
-
         }
     }
 }

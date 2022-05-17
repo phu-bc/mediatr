@@ -5,7 +5,7 @@ using MediatRDemo.Repositories;
 
 namespace MediatRDemo.Handlers
 {
-    public class GetEmployeByIdQueryHandler : IRequestHandler<GetEmployeByIdQuery, Employee>
+    public class GetEmployeByIdQueryHandler : IRequestHandler<GetEmployeByIdQuery, Employee?>
     {
         private readonly IEmployeeRepository _employeeRepository;
 
@@ -14,7 +14,7 @@ namespace MediatRDemo.Handlers
             _employeeRepository = employeeRepository;
         }
 
-        public Task<Employee> Handle(GetEmployeByIdQuery request, CancellationToken cancellationToken)
+        public Task<Employee?> Handle(GetEmployeByIdQuery request, CancellationToken cancellationToken)
         {
             return _employeeRepository.GetById(request.EmployeeId);
         }

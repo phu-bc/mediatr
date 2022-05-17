@@ -5,7 +5,7 @@ namespace MediatRDemo.Repositories
 {
     public interface IEmployeeRepository
     {
-        Task<Employee> GetById(int id);
+        Task<Employee?> GetById(int id);
 
         Task<List<Employee>> GetAll();
 
@@ -28,7 +28,7 @@ namespace MediatRDemo.Repositories
             return _employeeContext.Employees.ToListAsync();
         }
 
-        public Task<Employee> GetById(int id)
+        public Task<Employee?> GetById(int id)
         {
             return _employeeContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
         }
